@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+    {% for Homes in home %}
+        <div class="container">
+            <div style="padding-top:50px;">
+
+                <p class="text-right"><h1>{{Homes.title}}</h1></p>
+                <!--Agregar la descripción del proyecto y que pueda ser modificada por el administrador-->
+                <p class="text-justify">{{Homes.content|safe}} </p>
+                <!--Agregar video del demo-->
+                <!-- 16:9 aspect ratio -->
+                <div class="embed-responsive embed-responsive-16by9 mb-5">
+                    <iframe class="embed-responsive-item w-10 h-1" src="{{Homes.url}}" allowfullscreen></iframe>
+                </div>
+
+                {% if request.user.is_staff %}
+                    <p><h4><a href="#">editar</h4></p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

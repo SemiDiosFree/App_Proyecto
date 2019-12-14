@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Proyecto{% endblock %}
+{% block content %}
+<h3 class="text-center mt-5">Proyectos</h3>
+    <h3 class="text-center mt-5">{{ object.title }}</h3>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="btn btn-outline-success mb-2" href="{% url 'projects:projects' %}">Proyectos</a>
+                </div>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="btn btn-outline-success mb-2" href="{% url 'projects:create' %}">+ Proyecto</a>
+                </div>
+            </div>
+            
+            <div class="col-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    
+                    <div class="tab-pane fade show active col-sm-mr-2" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                        <div class="container ml-3 mb-3 ">
+                            <ul class="nav nav-pills nav-fill">
+                                <li class="nav-item">
+                                <!--https://www.youtube.com/watch?v=SFgnKRHWHIg-->
+                                    <a class="btn btn-outline-success" href="{% url 'projects:repos' %}">Añadir Imagenes</a>
+                                    <!-- Agregar un reverse lazy o un get_succes_url-->
+                                </li>
+                                <li class="nav-item">
+                                    <button class="btn btn-outline-success" onclick="location.href='{% url 'projects:entrenamiento' %}'">Entrenar red</button>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-success" href="{% url 'projects:imagesAdd' %}">Identificación</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-success" href="#">Foto-Trampas</a>
+                                </li>
+                            </ul>
+
+                            <div class="container ml-3 mt-3">
+                                <p><b>Descripción del proyecto:</b> {{object.content}} </p>
+                                <!-- Solo añade imagenes que son agregadas desde el admin
+
+                                {% for obj in Proyectos.Imagenes_set.all %}
+                                    <img src="{{obj.image.url}}" class="img-fluid" width="150px" alt="Responsive image">
+                                    <p>IDProyecto: {{obj.proyecto}}</p>
+                                {%endfor%} 
+                                -->
+
+                                <!--For de prueba para jalar las imagenes
+                                Este for trae todas las imagenes que se agregan: solución. Aplicar un filtro por id del proyecto.
+                                -->
+
+                                
+                                {% for im in img%}
+                                    <form >    
+                                        <img src="{{im.image.url}}" class="img-fluid" width="150px" alt="Responsive image"><p></p>
+                                            <p>{{im.image.url}}</p>
+                                            <p>{{ im.tag }}</p>
+                                    </form>
+                                {%endfor%}  
+                                <p><a class="btn btn-outline-success" href="{% url 'projects:clasificacion' %}">Identificar</a></p>
+                                
+                                <!--Fin del for de pruebas-->
+
+                                <p>Foto-Trampa: {{object.FKFT}} </p>
+                                <p>Autor: {{object.FKauthor}} </p>
+                                <p>Usuario logeado: {{ request.user.username }}</p>
+                            </div>  
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
