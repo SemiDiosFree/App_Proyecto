@@ -11,5 +11,6 @@ projects_patterns = ([
     path('repos/', RepositorioImagesView.as_view(), name="repos"),
     path('training/', script, name='entrenamiento'),
     path('clasifi/', clasifi, name='clasificacion'),
+    path('extract/', extract, name='features'),
    # path('phototramp/', PTListView.as_view(), name="phototramp"),
 ],'projects')

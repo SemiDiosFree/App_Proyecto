@@ -85,7 +85,6 @@ class ProjectViewDelete(DeleteView):
 class AddImagesView(LoginRequiredMixin, CreateView):        # Agregar imagenes a la base de datos solamente
     model = Imagenes
     form_class = ImageForm
-    #extract_features()                                      #Temporal.. Quitar despúes
     success_url = reverse_lazy('projects:projects')
     
 
@@ -96,15 +95,6 @@ class RepositorioImagesView(LoginRequiredMixin, CreateView):        # Add Images
     form_class = MultipleImageForm
     success_url = reverse_lazy('projects:projects')
 
-    """def form_valid(self, form):
-        obj = form.save(commit=False)
-
-        if self.request.FILES:
-            for f in self.request.FILES.getlist('image'):
-                obj = self.model.objects.create(image=f)
-
-        return super(RepositorioImagesView, self).form_valid(form)
-"""
     def post(self, request):
         form_class = MultipleImageForm
         #form = self.get_form(form_class)
@@ -112,7 +102,8 @@ class RepositorioImagesView(LoginRequiredMixin, CreateView):        # Add Images
             form= MultipleImageForm(request.POST, request.FILES)
             files = request.FILES.getlist('image')
             if form.is_valid():
-                FM = Categorias(tag = str(form.save(commit=False)))
+                FM = Categorias(tag = str(form.cleaned_data['tag']))
+                #str(form.save(commit=False))
                 #form.save()
                 FM.save()
                 for f in files:
@@ -136,10 +127,10 @@ def script(request):
 def clasifi(request):
     clasification()
 
-    def get_context_data(self, **kwargs):
+    """def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['img']=Imagenes.objects.all()
         #extract_features()
-        return context
+        return context"""
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))

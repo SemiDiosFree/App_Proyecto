@@ -1,3 +1,5 @@
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+
 import subprocess
 from .models import Proyectos, Imagenes, Categorias
 
@@ -54,6 +56,18 @@ def clasification():
       a.tag = clasification
       a.save()
       #return True
+
+    for category in Categorias.objects.all():
+      cat = category.tag
+      aa = [cat]
+      print('a = ',aa)
+      p = [a.save()]
+      print('p = ',p)
+      #r = confusion_matrix(aa, p)
+      #print('Confusion matrix: ', r)
+      #print('Accuracy Score :',accuracy_score(aa, p))
+      #print('***  Report :  ***')
+      #print(classification_report(a, p))
   except subprocess.CalledProcessError as identifier:
     print('error', identifier)
   return True
