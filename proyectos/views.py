@@ -40,16 +40,20 @@ class ProjectDetailView(DetailView):
 
     #Obtiene todas las imágenes que se agregan
     def get_context_data(self, **kwargs):
+        for i in Imagenes.objects.all():
+            print('Modelo Imagenes: ',i.proyecto)
+        for p in Proyectos.objects.all():
+            print('modelo Proyecto: ', p.title)
         context = super().get_context_data(**kwargs)
-        context['img']=Imagenes.objects.all()
+        context['img']=Imagenes.objects.filter(proyecto = i.proyecto)
+        print('Modelo Proyecto: ',context)
+        
         #extract_features()
         return context
     
     #filtrar a las imagenes por id del proyecto
     #def get_queryset(self):
-     #   proy = Proyectos.objects.all()
-        #proy = proy.filter(id = pk)
-      #  return Imagenes.objects.filter(proyecto=int(Proyectos.id))
+     #   return Imagenes.objects.filter(proyecto__title=str(Proyectos.title))
 
  #CreateView Project#
 @method_decorator(login_required, name='dispatch')
@@ -126,11 +130,4 @@ def script(request):
 #funcion donde está agregado el metodo clasificación
 def clasifi(request):
     clasification()
-
-    """def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['img']=Imagenes.objects.all()
-        #extract_features()
-        return context"""
-
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))

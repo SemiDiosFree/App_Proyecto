@@ -1,6 +1,13 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block title %}Inicio{% endblock %}
+{% block jumbo %}
+<!--Jumbotron-->
+      <div class="jumbotron text-center" style="margin-bottom:0">
+        <img src="{% static 'core/img/itsz.png' %}" class="img-fluid rounded" width="50px" alt="Responsive image"> 
+        <h1>Titulo</h1>
+      </div>
+{% endblock %}
 {% block content %}
     {% for Homes in home %}
         <div class="container">

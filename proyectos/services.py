@@ -60,9 +60,9 @@ def clasification():
     for category in Categorias.objects.all():
       cat = category.tag
       aa = [cat]
-      print('a = ',aa)
+      #print('a = ',aa)
       p = [a.save()]
-      print('p = ',p)
+      #print('p = ',p)
       #r = confusion_matrix(aa, p)
       #print('Confusion matrix: ', r)
       #print('Accuracy Score :',accuracy_score(aa, p))

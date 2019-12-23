@@ -12,7 +12,7 @@
             <!-- Previa del avatar -->
             <div class="col-md-2">
               {% if request.user.profile.avatar %}
-                <img src="{{request.user.profile.avatar.url}}" class="img-fluid">
+                <img src="{{request.user.profile.avatar.url}}" class="img-fluid md" width="200px" alt="Responsive image">
                 <p class="mt-1">¿Borrar? <input type="checkbox" id="avatar-clear" name="avatar-clear" /></p>
               {% else %}
               <img src="{% static 'registration/img/no-avatar.jpg' %}" class="img-fluid">

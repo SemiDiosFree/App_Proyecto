@@ -12,8 +12,11 @@
     <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'core/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'core/css/main.css' %}" rel="stylesheet">
+    {% block linkHREF %}{% endblock %}
+    {% block style %}{% endblock %}
   </head>
     <body>
+      {% block jumbo %}{% endblock %}
       <!-- Navegación -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -46,16 +49,14 @@
                 {% endif %}  
               <!-- Split dropup button -->
               <div class="btn-group dropright">
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {% if request.user.profile.avatar %}
                     <img src="{{request.user.profile.avatar.url}}" class="img-fluid" width="20px" alt="Responsive image">
                   {% else %}
                   <img src="{% static 'registration/img/no-avatar.jpg' %}" class="img-fluid" width="20px" alt="Responsive image">
                   {% endif %}
                 </button>
-                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="sr-only">Toggle Dropright</span>
-                </button>
+              
                 <div class="dropdown-menu bg-dark">
                   <!-- Dropdown menu links -->
                   <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
@@ -75,43 +76,97 @@
       <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
       <script src="{% static 'core/js/main.js' %}"></script>
     </body>
-  <!--Footer-->
-  <footer class="footer text-faded text-center py-3 bg-secondary">
-    <div class="container">
-        <p class="m-0">
-        {% if LINK_TWITTER %}
-          <a class="link" href="{{LINK_TWITTER}}">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-            </span>
-          </a>
-        {% endif %}
-        {% if LINK_FACEBOOK %}
-          <a class="link" href="{{LINK_FACEBOOK}}">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-            </span>
-          </a>
-        {% endif %}
-        {% if LINK_INSTAGRAM %}
-          <a class="link" href="{{LINK_INSTAGRAM}}">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
-            </span>
-          </a>
-        {% endif %}
-      </p>
-      <p class="m-0 mbt">
-        {% load pages_extras %}
-        {% get_page_list as page_list %}
-        {% for page in page_list %}
-          <a class="link text-white" href="{% url 'pages:page' page.id page.title|slugify %}">{{page.title}}</a>{% if not forloop.last %} * {% endif %}
-        {% endfor %}
-      </p>
-      <p class="m-0 mbt1">Instituto Tecnologico Superior de Zacapoaxtla</p>
+    <!-- Footer -->
+  <footer class="page-footer font-small unique-color-dark bg-dark">
+    <!--Primer Contenedor-->
+    <div class='bg-dark'>
+      <!--2do Contenedor-->
+      <div class="container">
+        <!-- Grid row-->
+        <div class="row py-4 d-flex align-items-center">
+          <!-- Grid column -->
+          <div>
+          <!-- Footer Links -->
+          <div class="container text-center text-md-left mt-5" >
+            <!-- Grid row -->
+            <div class="row mt-3">
+
+              <!-- Company name -->
+              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 text-white">
+                <!-- Content -->
+                <h6 class="text-uppercase font-weight-bold">Company name</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
+                  consectetur
+                  adipisicing elit.</p>
+              </div>
+              <!-- Fin Company name -->
+
+              <!-- Páginas -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 text-white">
+                
+                <h6 class="text-uppercase font-weight-bold">Páginas</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                {% load pages_extras %}
+                {% get_page_list as page_list %}
+                {% for page in page_list %}
+                  <p>
+                    <a class="link text-light" href="{% url 'pages:page' page.id page.title|slugify %}">{{page.title}}</a>
+                  </p>
+                {% endfor %}
+              </div>
+              <!-- Fin Páginas -->
+
+              <!-- Redes sociales -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 text-white">
+                <!-- Links -->
+                <h6 class="text-uppercase font-weight-bold">Redes Sociales</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                  <p>
+                    {% if LINK_TWITTER %}
+                      <a class="link" href="{{LINK_TWITTER}}">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    {% endif %}
+                    {% if LINK_FACEBOOK %}
+                      <a class="link" href="{{LINK_FACEBOOK}}">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    {% endif %}
+                    {% if LINK_INSTAGRAM %}
+                      <a class="link" href="{{LINK_INSTAGRAM}}">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    {% endif %}
+                  </p>
+              </div>
+              <!-- Redes sociales -->
+            </div>
+            <!-- Grid row -->
+          </div>
+          <!-- Footer Links -->
+
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3 text-light">© 2018 Copyright:
+            <a class='text-light' href="http://www.itsz.edu.mx/">Instituto Tecnologico Superior de Zacapoaxtla</a>
+          </div>
+          <!-- Copyright -->
+          </div>
+        </div>
+        <!-- Grid row-->
+      </div>
+      <!--Fin del 2do Contenedor-->
     </div>
+    <!--Fin del Primer Contenedor-->
   </footer>
+  <!-- Footer -->
 </html>

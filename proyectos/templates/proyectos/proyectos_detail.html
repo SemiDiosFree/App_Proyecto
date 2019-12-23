@@ -1,6 +1,31 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block title %}Proyecto{% endblock %}
+{% block linkHREF %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+{% endblock %}
+{% block style %}
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner {
+            width: 90%;
+            height: 90%;
+        }
+        .img{
+            position:absolute; 
+            z-index:1; 
+            width:100%; 
+            height:100%;
+        }
+        #demo{
+            width: 60%;
+            height: 40%;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 <h3 class="text-center mt-5">Proyectos</h3>
     <h3 class="text-center mt-5">{{ object.title }}</h3>
@@ -49,22 +74,52 @@
                                 <!--For de prueba para jalar las imagenes
                                 Este for trae todas las imagenes que se agregan: solución. Aplicar un filtro por id del proyecto.
                                 -->
-
-                                
+                                <!--
+                                <div id="demo" class="carousel slide bg-dark position-relative" data-ride="carousel">
+                                    <h1 class ='text-center'>Galeria</h1>
+                                    <-- The slideshow --
+                                    <div class="carousel-inner">
+                                        
+                                        <div class="carousel-item active">
+                                            <img src="media/None/inicio.jpg" class="img-fluid position-relative" alt="res">
+                                            <div class="carousel-caption">
+                                                <h3>Los Angeles</h3>
+                                                <p>We had such a great time in LA!</p>
+                                            </div>
+                                        </div>
+                                        {% for im in img%}
+                                            <div class="container carousel-item mx-auto" >
+                                                <img src="{{im.image.url}}" class="img-fluid " alt="{{ im.tag }}"><p></p>
+                                                    <div class="carousel-caption">
+                                                        <h3>{{ im.tag }}</h3>
+                                                    </div>
+                                            </div>
+                                        {%endfor%}  
+                                        
+                                    </div>
+                                    <-- Left and right controls --
+                                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </a>
+                                </div> 
+                                -->
                                 {% for im in img%}
-                                    <form >    
-                                        <img src="{{im.image.url}}" class="img-fluid" width="150px" alt="Responsive image"><p></p>
-                                            <p>{{im.image.url}}</p>
-                                            <p>{{ im.tag }}</p>
-                                    </form>
+                                    <img src="{{im.image.url}}" class="img-fluid" width='150px' alt="{{ im.tag }}"><p></p>
+                                    <h3>{{ im.tag }}</h3>
+                                    <p>{{ im.proyecto }}</p>
                                 {%endfor%}  
                                 <p><a class="btn btn-outline-success" href="{% url 'projects:clasificacion' %}">Identificar</a></p>
-                                
-                                <!--Fin del for de pruebas-->
-
                                 <p>Foto-Trampa: {{object.FKFT}} </p>
-                                <p>Autor: {{object.FKauthor}} </p>
-                                <p>Usuario logeado: {{ request.user.username }}</p>
+                                    <p>Autor: {{object.FKauthor}} </p>
+                                    <p>Usuario logeado: {{ request.user.username }}</p>
+
+                                <iframe src="https://drive.google.com/drive/my-drive" width="300px" height="200px">
+
+                                </iframe> 
+
                             </div>  
 
                         </div>
