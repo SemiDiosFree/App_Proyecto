@@ -39,22 +39,32 @@ class ProjectDetailView(DetailView):
     model = Proyectos
 
     #Obtiene todas las imágenes que se agregan
-    def get_context_data(self, **kwargs):
-        for i in Imagenes.objects.all():
-            print('Modelo Imagenes: ',i.proyecto)
-        for p in Proyectos.objects.all():
-            print('modelo Proyecto: ', p.title)
-        context = super().get_context_data(**kwargs)
-        context['img']=Imagenes.objects.filter(proyecto = i.proyecto)
-        print('Modelo Proyecto: ',context)
-        
-        #extract_features()
-        return context
     
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        print('1    ************')
+        for p in Proyectos.objects.all():
+            print('Proyecto: ', p.title)
+        print('1    ************-')
+        print('\n2   ***********')
+        for i in Imagenes.objects.all():
+            print('Imagenes: ',i.proyecto)
+        print('2    ************-')
+        context['img']=Imagenes.objects.filter(proyecto = i.proyecto)
+        print('CTX: ',context)
+        return context
+"""
     #filtrar a las imagenes por id del proyecto
-    #def get_queryset(self):
-     #   return Imagenes.objects.filter(proyecto__title=str(Proyectos.title))
-
+    def get_queryset(self):
+        for p in Proyectos.objects.all():
+            print('Proyectos: ',p.title)
+        for i in Imagenes.objects.all():
+            print('Proyectos: ',i.proyecto)
+        print('Proyectos-->: ',i.proyecto)
+        img = Imagenes.objects.filter(proyecto__title=i.proyecto)
+        print('img: ', img)
+        return img
+"""
  #CreateView Project#
 @method_decorator(login_required, name='dispatch')
 class ProjectViewCreate(CreateView):

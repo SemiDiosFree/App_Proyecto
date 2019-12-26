@@ -31,6 +31,9 @@ class Imagenes(models.Model):
     class Meta: 
         verbose_name="Imágenes"
 
+    def __str__(self):
+        return "%s/%s" %(self.proyecto, self.id)
+
 @receiver(post_delete, sender = Imagenes)
 def image_delete(sender, instance, **kwargs):
     #Borrar los ficheros de las fotos que se eliminan.
