@@ -1,5 +1,5 @@
 from django import forms
-from .models import Proyectos, Imagenes, FotoTrampa, Repositorio
+from .models import Proyectos, Imagenes, Repositorio
 from django.http import HttpResponse
 
 
@@ -19,6 +19,7 @@ class PageForm(forms.ModelForm):
             'title':'', 'content':'', 'author':'Autor'
         }
         
+
 
 class MultipleImageForm(forms.ModelForm):
     class Meta:
@@ -42,18 +43,4 @@ class ImageForm(forms.ModelForm):
 
         labels = {
             'IDProyecto':'', 'image':'Imágen'
-        }
-class PhotoTrampForm(forms.ModelForm):
-    class Meta:
-        model = FotoTrampa
-        #Agregar la etiqueta de mask en fields
-        fields = ['ipaddress','domain']
-        widgets = {
-            'ipaddress':forms.NumberInput(attrs={'class':'form-control-file mt-3'}),
-            #'mask':forms.NumberInput(attrs={'class':'form-control-file mt-3'}),
-            'domain' : forms.URLInput(attrs={'class':'form-control-file mt-3'})
-        }
-
-        labels = {
-            'ipaddress':'IP', 'domain':'Nombre de dominio'
         }

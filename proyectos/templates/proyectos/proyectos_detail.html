@@ -44,6 +44,9 @@
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="btn btn-outline-success mb-2" href="{% url 'projects:create' %}">+ Proyecto</a>
                 </div>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="btn btn-outline-success mb-2" href="{% url 'projects:features' %}">Extract F</a>
+                </div>
             </div>
             
             <div class="col-9">
@@ -64,7 +67,8 @@
                                 </li>
                                 <li class="nav-item">
                                 <!-- Agregar una imagen al boton para añadir imágenes de drive -->
-                                    <a href="javascript:void(0);" onclick="window.open('https://drive.google.com/drive/my-drive',  'popup', 'top=100, left=200, width=853, height=480, toolbar=NO, resizable=NO, Location=NO, Menubar=NO,  Titlebar=No, Status=NO')" rel="nofollow" class="btn btn-outline-success">Foto-Trampas</a>
+                                    <a href="javascript:void(0);" onclick="window.open('https://drive.google.com/drive/my-drive',  'popup', 'top=100, left=200, width=853, height=480, toolbar=NO, resizable=NO, Location=NO, Menubar=NO,  Titlebar=No, Status=NO')" 
+                                    rel="nofollow" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Gmail">Foto-Trampas</a>
                                 </li>
                             </ul>
 
@@ -72,17 +76,17 @@
                                 <p><b>Descripción del proyecto:</b> {{object.content}} </p>
                                 <div class="row mt-3">
                                     
-                                        {% for im in img%}
+                                        {% for im in img %}
                                         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                                             <img src="{{im.image.url}}" class="img-fluid" width='150px' alt="{{ im.tag }}"><p></p>
                                             <h3>{{ im.tag }}</h3>
                                             <p>{{ im.proyecto }}</p>
+                                            <p>{{ im.image.url }}</p>
                                         </div>
                                         {%endfor%}
                                     
                                 </div>
                                 <p><a class="btn btn-outline-success" href="{% url 'projects:clasificacion' %}">Identificar</a></p>
-                                <p>Foto-Trampa: {{object.FKFT}} </p>
                                 <p>Autor: {{object.FKauthor}} </p>
                                 <p>Usuario logeado: {{ request.user.username }}</p>
                             </div> 

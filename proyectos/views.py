@@ -7,14 +7,14 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormView
-from .forms import PageForm, ImageForm, PhotoTrampForm, MultipleImageForm
+from .forms import PageForm, ImageForm, MultipleImageForm
 from .models import Proyectos, Imagenes, Historial, Repositorio, Categorias
 from django.contrib.auth.models import User
 from .services import extract_features, training, clasification
 from django.shortcuts import render
-import sys
+import sys, os
 from django.http import HttpResponseRedirect
-
+from django.contrib import messages
 from .services import extract_features
 from subprocess import run, PIPE
 from django.core.files.storage import FileSystemStorage
@@ -36,35 +36,26 @@ class ProjectListView(ListView):
     ##DetailView Project
 @method_decorator(login_required, name='dispatch')
 class ProjectDetailView(DetailView):
+    paginate_by = 15
     model = Proyectos
-
+    ruta = os.getcwd()+'\\'
+    print('La ruta es: ',ruta)
     #Obtiene todas las imágenes que se agregan
     
     def get_context_data(self, **kwargs):
+        #   Añadir un if
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        print('1    ************')
-        for p in Proyectos.objects.all():
-            print('Proyecto: ', p.title)
-        print('1    ************-')
-        print('\n2   ***********')
+        titulo = context.get('proyectos')
+        print(titulo)
+        #   Añadir un if
         for i in Imagenes.objects.all():
             print('Imagenes: ',i.proyecto)
         print('2    ************-')
-        context['img']=Imagenes.objects.filter(proyecto = i.proyecto)
+        context['img']=Imagenes.objects.filter(proyecto = titulo)
         print('CTX: ',context)
+        print('Nombre del proyecto: ',self.kwargs.get('slug'))
         return context
-"""
-    #filtrar a las imagenes por id del proyecto
-    def get_queryset(self):
-        for p in Proyectos.objects.all():
-            print('Proyectos: ',p.title)
-        for i in Imagenes.objects.all():
-            print('Proyectos: ',i.proyecto)
-        print('Proyectos-->: ',i.proyecto)
-        img = Imagenes.objects.filter(proyecto__title=i.proyecto)
-        print('img: ', img)
-        return img
-"""
+
  #CreateView Project#
 @method_decorator(login_required, name='dispatch')
 class ProjectViewCreate(CreateView):
@@ -72,11 +63,37 @@ class ProjectViewCreate(CreateView):
     form_class = PageForm
     success_url = reverse_lazy('projects:projects')
 
-    def dispatch(self, request, *args, **kwargs):
-                    # Imprimimos el usuario que inicio sesión 
-        print(request.user)
+    def post(self,request):
+        form_class = PageForm
+        if request.method == 'POST':
+            form = PageForm(request.POST)
+            if form.is_valid():
+                title = str(form.cleaned_data['title'])
+                ruta = os.path.abspath('media')+'\\'
+                print('Ruta donde se guardaran: ',ruta)
+                #comprobar si la ruta existe
+                if os.path.isdir(ruta+title):
+                    print('La carpeta ya existe')
+                else:
+                    os.mkdir(ruta+title)
+                    print('se creo!!')
+                    ruta = os.path.abspath('media'+'\\'+title)
+                    print('Ruta del proyecto: ',ruta)
+                    messages.success(request, 'Creado.')
 
-        return super().dispatch(request, *args, **kwargs)
+                    model = '\\'+'models'
+                    print('modelo: ',model)
+                    os.mkdir(ruta+model)
+                    print('se creo el modelo')
+                    media = '\\'+'media'
+                    os.mkdir(ruta+media)
+                    print('se creo la carpeta media')
+                    
+                    
+            return self.form_valid(form)
+        return self.form_invalid(form)
+
+    
 
 ##UpdateView Project
 @method_decorator(login_required, name='dispatch')
@@ -100,7 +117,6 @@ class AddImagesView(LoginRequiredMixin, CreateView):        # Agregar imagenes a
     model = Imagenes
     form_class = ImageForm
     success_url = reverse_lazy('projects:projects')
-    
 
 #Add Repos Images Project
 @method_decorator(login_required, name='dispatch')
@@ -117,13 +133,14 @@ class RepositorioImagesView(LoginRequiredMixin, CreateView):        # Add Images
             files = request.FILES.getlist('image')
             if form.is_valid():
                 FM = Categorias(tag = str(form.cleaned_data['tag']))
-                #str(form.save(commit=False))
+                #FM = form.save(commit=False)
                 #form.save()
                 FM.save()
                 for f in files:
                     gallery = Repositorio(tag = FM, image=f)
                     gallery.save()
                 return self.form_valid(form)
+                extract()
             else:
                 return self.form_invalid(form)
 
